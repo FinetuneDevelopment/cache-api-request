@@ -16,7 +16,6 @@ const cacheDataMaxAge = process.env.LOCAL_CACHE_MAX_AGE
   : 3600000;
 
 const Page = (props) => {
-
   return (
     <main>
       <Head>
@@ -37,8 +36,7 @@ const Page = (props) => {
 
 export default Page;
 
-export async function getStaticProps(context) {
-  const { params } = context;
+export async function getStaticProps({ params }) {
   const { slug } = params;
 
   let pageListData;
