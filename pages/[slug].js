@@ -73,7 +73,7 @@ export async function getStaticProps({ params }) {
     name: "Not found",
     url: "not-found",
     content: "Content not found.",
-    img: "https://placeimg.com/800/400/people",
+    img: "/img/about.jpg",
     id: "0000",
   };
 
