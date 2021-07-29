@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+// This component generates a navigation bar from the page list API
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
 export default function Navigation() {
@@ -17,12 +18,14 @@ export default function Navigation() {
   }, []);
 
   return (
-    <ul>
-      {pageList.map((page) => (
-        <li key={page.id}>
-          <Link href={`/${page.url}`}>{page.name}</Link>
-        </li>
-      ))}
-    </ul>
+    <nav aria-label="Main">
+      <p>
+        {pageList.map((page) => (
+          <React.Fragment key={page.id}>
+            <Link href={`/${page.url}`}>{page.name}</Link>{" "}
+          </React.Fragment>
+        ))}
+      </p>
+    </nav>
   );
 }

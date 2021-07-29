@@ -1,13 +1,12 @@
+// This returns JSON containing the page ID, the page name and the page URL of every page on the site.
 import { pageData } from "../../data/page-data";
 
-// Only return the URLs and the IDs to the browser
 const pageList = pageData.map((page) => ({
-  url: page.url,
   id: page.id,
   name: page.name,
+  url: page.url,
 }));
 
-// Example headless CMS data
 export default function handler(req, res) {
   res.status(200).json(pageList);
 }

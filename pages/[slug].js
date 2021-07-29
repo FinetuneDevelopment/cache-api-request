@@ -1,3 +1,4 @@
+// This renders any page matching a URL found in the site content data.
 import Head from "next/head";
 import Link from "next/link";
 import Navigation from "../components/navigation";

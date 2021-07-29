@@ -1,6 +1,6 @@
+// This accepts an ID as an input and returns the JSON data for a matching page.
 import { pageData } from "../../data/page-data";
 
-// Returns the page data for the matching ID
 export default function handler(req, res) {
   const id = req.body.id;
   const pageDetail = pageData.filter((page) => page.id === id);

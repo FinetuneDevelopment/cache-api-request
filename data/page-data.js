@@ -1,3 +1,4 @@
+// All of the data for the content of the example site
 export const pageData = [
   {
     name: "About us",
