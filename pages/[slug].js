@@ -16,6 +16,7 @@ const cacheDataMaxAge = process.env.LOCAL_CACHE_MAX_AGE
   : 3600000;
 
 const Page = (props) => {
+
   return (
     <main>
       <Head>
@@ -47,7 +48,6 @@ export async function getStaticProps(context) {
   // 2. Is the time since the last time the cache been updated less than the max cache age?
   if (!pageList[0] || Date.now() - pageList[0] > cacheDataMaxAge) {
     try {
-      // Get the list of pages, so we can work out what the ID of the current page is
       const pageList = await fetch("http://localhost:3000/api/get-page-list", {
         method: "POST",
         headers: {
@@ -58,7 +58,9 @@ export async function getStaticProps(context) {
       // Update the cache
       const newPageList = [Date.now(), pageListData];
       fs.writeFileSync(cachePath, JSON.stringify(newPageList));
+      console.log("Cache updated.");
     } catch {
+      // API not responding: pull data from cache
       pageListData = pageList[1];
     }
   }
@@ -115,8 +117,9 @@ export async function getStaticPaths() {
       // Update the cache
       const newPageList = [Date.now(), pageListData];
       fs.writeFileSync(cachePath, JSON.stringify(newPageList));
+      console.log("Cache updated.");
     } catch {
-      console.log("API not responding: loading data from cache");
+      // API not responding: pulling data from cache
       pageListData = pageList[1];
     }
   }
@@ -125,19 +128,7 @@ export async function getStaticPaths() {
     pageListData = pageList[1];
   }
 
-  // This is bad practice: if you ever find yourself using fetch() inside
-  // getStaticPaths(), it's better to simply grab the data you need from
-  // the file system. However, I need to fake a headless CMS, for demo
-  // purposes.
-  /*const response = await fetch("http://localhost:3000/api/get-page-list", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  const data = await response.json();*/
   let pathObject = [];
-  // Building up the object to send NextJS
   pageListData.map((path) => pathObject.push({ params: { slug: path.url } }));
 
   return {
