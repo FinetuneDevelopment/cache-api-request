@@ -2,8 +2,10 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
+// Unfortunately, what Vercel reports as the public URL via environmental variables
+// isn't what it tells me the URL is, hence this hard-coded value.
 const currentURL = process.env.NEXT_PUBLIC_VERCEL_URL
-  ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+  ? "https://cache-api-request.vercel.app"
   : "http://localhost:3000";
 
 export default function Navigation() {

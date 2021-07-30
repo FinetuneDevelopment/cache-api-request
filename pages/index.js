@@ -11,8 +11,24 @@ export default function Home() {
       </Head>
 
       <main>
+        <Navigation />
         <h1>Please pick a page</h1>
-        <Navigation/>
+        <p>
+          This is a proof-of-concept of a method of caching API requests in
+          Next.JS.
+        </p>
+        <ul>
+          <li>
+            <a href="https://finetunepartners.com/insights/caching-api-requests-in-next-js/">
+              Write-up
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/FinetuneDevelopment/cache-api-request">
+              GitHub repo
+            </a>
+          </li>
+        </ul>
       </main>
     </>
   );
