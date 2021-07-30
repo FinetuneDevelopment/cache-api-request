@@ -6,6 +6,8 @@ import Link from "next/link";
 import Image from "next/image";
 import Navigation from "../components/navigation";
 
+const currentURL = (process.env.VERCEL_URL) ? process.env.VERCEL_URL : "http://localhost:3000";
+
 // Path to the JSON file which holds a locally cached list of pages, URLs and their IDs
 const cachePath = path.join(process.cwd(), "cache", "page-list.json");
 const pageList = JSON.parse(fs.readFileSync(cachePath));
@@ -46,7 +48,7 @@ export async function getStaticProps({ params }) {
   // 2. Is the time since the last time the cache been updated less than the max cache age?
   if (!pageList[0] || Date.now() - pageList[0] > cacheDataMaxAge) {
     try {
-      const pageList = await fetch("http://localhost:3000/api/get-page-list", {
+      const pageList = await fetch(`${currentURL}/api/get-page-list`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -79,7 +81,7 @@ export async function getStaticProps({ params }) {
 
   try {
     // Using the ID above, get the data which matches the page
-    const pageDetail = await fetch("http://localhost:3000/api/get-page-data", {
+    const pageDetail = await fetch(`${currentURL}/api/get-page-data`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -105,7 +107,7 @@ export async function getStaticPaths() {
   if (!pageList[0] || Date.now() - pageList[0] > cacheDataMaxAge) {
     try {
       // Get the list of pages, so we can work out what the ID of the current page is
-      const pageList = await fetch("http://localhost:3000/api/get-page-list", {
+      const pageList = await fetch(`${currentURL}/api/get-page-list`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
