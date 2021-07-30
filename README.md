@@ -1,6 +1,6 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-This project is a proof-of-concept for caching API requests to a local file. [There's more of a write-up on the main Finetune site](https://finetunedevelopment.github.io/fine-tune-2020-dev/insights/caching-api-requests-in-next-js/).
+This project is a proof-of-concept for caching API requests to a local file. [There's more of a write-up on the main Finetune site](https://finetunedevelopment.github.io/fine-tune-2020-dev/insights/caching-api-requests-in-next-js/). [The finished site is nothing special - just some latin holding text and photographs of text](https://cache-api-request.vercel.app/).
 
 ## Getting Started
 
