@@ -21,6 +21,36 @@ const cacheDataMaxAge = process.env.LOCAL_CACHE_MAX_AGE
   ? parseInt(process.env.LOCAL_CACHE_MAX_AGE)
   : 3600000;
 
+const getPageListData = async () => {
+  let pageListData;
+
+  // Do we have a valid, stored list of pages?
+  // 1. The first element in the array will be null if this has never fetched data before
+  // 2. Is the time since the last time the cache been updated less than the max cache age?
+  if (!pageList[0] || Date.now() - pageList[0] > cacheDataMaxAge) {
+    try {
+      const pageList = await fetch(`${currentURL}/api/get-page-list`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      pageListData = await pageList.json();
+      // Update the cache
+      const newPageList = [Date.now(), pageListData];
+      fs.writeFileSync(cachePath, JSON.stringify(newPageList));
+    } catch {
+      // API not responding: pull data from cache
+      pageListData = pageList[1];
+    }
+  }
+  // Store bought data is fine
+  else {
+    pageListData = pageList[1];
+  }
+  return pageListData;
+};
+
 const Page = (props) => {
   return (
     <main>
@@ -44,35 +74,7 @@ export default Page;
 
 export async function getStaticProps({ params }) {
   const { slug } = params;
-
-  let pageListData;
-
-  // Do we have a valid, stored list of pages?
-  // 1. The first element in the array will be null if this has never fetched data before
-  // 2. Is the time since the last time the cache been updated less than the max cache age?
-  if (!pageList[0] || Date.now() - pageList[0] > cacheDataMaxAge) {
-    try {
-      const pageList = await fetch(`${currentURL}/api/get-page-list`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      pageListData = await pageList.json();
-      // Update the cache
-      const newPageList = [Date.now(), pageListData];
-      fs.writeFileSync(cachePath, JSON.stringify(newPageList));
-      console.log("Cache updated.");
-    } catch {
-      // API not responding: pull data from cache
-      pageListData = pageList[1];
-    }
-  }
-  // Store bought data is fine
-  else {
-    pageListData = pageList[1];
-  }
-
+  const pageListData = await getPageListData();
   const currentPageData = pageListData.filter((page) => page.url === slug);
   const currentPageID = currentPageData[0].id;
   let pageDetailData = {
@@ -104,34 +106,7 @@ export async function getStaticProps({ params }) {
 }
 
 export async function getStaticPaths() {
-  let pageListData;
-  // Do we have a valid, stored list of pages?
-  // 1. The first element in the array will be null if this has never fetched data before
-  // 2. Is the time since the last time the cache been updated less than the max cache age?
-  if (!pageList[0] || Date.now() - pageList[0] > cacheDataMaxAge) {
-    try {
-      // Get the list of pages, so we can work out what the ID of the current page is
-      const pageList = await fetch(`${currentURL}/api/get-page-list`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      pageListData = await pageList.json();
-      // Update the cache
-      const newPageList = [Date.now(), pageListData];
-      fs.writeFileSync(cachePath, JSON.stringify(newPageList));
-      console.log("Cache updated.");
-    } catch {
-      // API not responding: pulling data from cache
-      pageListData = pageList[1];
-    }
-  }
-  // Store bought data is fine
-  else {
-    pageListData = pageList[1];
-  }
-
+  const pageListData = await getPageListData();
   let pathObject = [];
   pageListData.map((path) => pathObject.push({ params: { slug: path.url } }));
 
