@@ -10,7 +10,6 @@ const currentURL = process.env.NEXT_PUBLIC_VERCEL_URL
   ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
   : "http://localhost:3000";
 
-console.log(currentURL);
 // Path to the JSON file which holds a locally cached list of pages, URLs and their IDs
 const cachePath = path.join(process.cwd(), "cache", "page-list.json");
 const pageList = JSON.parse(fs.readFileSync(cachePath));

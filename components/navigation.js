@@ -11,7 +11,7 @@ export default function Navigation() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://${currentURL}/api/get-page-list`);
+        const response = await fetch(`${currentURL}/api/get-page-list`);
         const json = await response.json();
         setPageList(json);
       } catch (error) {
