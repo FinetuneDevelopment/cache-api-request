@@ -6,7 +6,14 @@ import Link from "next/link";
 import Image from "next/image";
 import Navigation from "../components/navigation";
 
-const currentURL = (process.env.NEXT_PUBLIC_VERCEL_URL) ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` : "http://localhost:3000";
+console.log("VERCEL_ENV: " + process.env.VERCEL_ENV);
+console.log("VERCEL_URL: " + process.env.VERCEL_URL);
+console.log("NEXT_PUBLIC_VERCEL_ENV: " + process.env.NEXT_PUBLIC_VERCEL_ENV);
+console.log("NEXT_PUBLIC_VERCEL_URL: " + process.env.NEXT_PUBLIC_VERCEL_URL);
+
+const currentURL = process.env.NEXT_PUBLIC_VERCEL_URL
+  ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+  : "http://localhost:3000";
 
 // Path to the JSON file which holds a locally cached list of pages, URLs and their IDs
 const cachePath = path.join(process.cwd(), "cache", "page-list.json");
